@@ -7,7 +7,6 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"strconv"
 	"sync"
 	"syscall"
 
@@ -21,32 +20,54 @@ const (
 	defaultListenPort = "53"
 	defaultListenAddr = "0.0.0.0"
 
+	clientSrcAddrLogField = "src_addr"
+	clientBytesReceived   = "bytes_received"
+
+	udpDataBufferSize = 1024
+
 	listenAddrEnvVar = "LISTEN_ADDR_ENV_VAR"
 	listenPortEnvVar = "LISTEN_PORT_ENV_VAR"
 )
 
 type dnsServer struct {
-	ctx    context.Context
-	wg     *sync.WaitGroup
-	logger zerolog.Logger
-	lstnr  *net.UDPConn
+	ctx     context.Context
+	wg      *sync.WaitGroup
+	logger  zerolog.Logger
+	udpaddr *net.UDPAddr
 }
 
-func (srvr *dnsServer) requestHandler() {
+func (srvr *dnsServer) msgHandler(udpconnn *net.UDPConn) {
+	for {
+		// This is most definitely not performant...should create once and rezero.
+		udpbuf := make([]byte, udpDataBufferSize)
+		n, addr, err := udpconnn.ReadFromUDP(udpbuf)
+		if err != nil {
+			srvr.logger.Error().Err(err).Msg("error reading the udp connection")
+		}
 
+		srvr.logger.Debug().
+			Str(clientSrcAddrLogField, addr.String()).
+			Int(clientBytesReceived, n).
+			Msg("processing message")
+
+		fmt.Printf("\t\tString: %+v\n", string(udpbuf))
+	}
 }
 func (srvr *dnsServer) runServer(stop chan os.Signal) {
 
-	buf := make([]byte, 1024)
-	_, addr, err := srvr.lstnr.ReadFromUDP(buf)
+	udpconn, err := net.ListenUDP("udp", srvr.udpaddr)
 	if err != nil {
-		srvr.logger.Error().Err(err).Msg("error reading from UDPConff")
+		srvr.logger.Fatal().Err(err).Msg("error when getting udpconn from net.ListenUDP")
 	}
-	fmt.Printf("%+v\t\t%+v", string(buf), addr)
 
-	// block until we receive a stop signal
+	go func() {
+		for {
+			srvr.msgHandler(udpconn)
+		}
+	}()
+
 	<-stop
-
+	udpconn.Close()
 }
 
 func main() {
@@ -73,23 +94,14 @@ func main() {
 		logger: cmd.SetupLogger(*debug, appName),
 	}
 
-	iport, err := strconv.Atoi(*port)
+	udpAddrPort, err := net.ResolveUDPAddr("udp", *address+":"+*port)
 	if err != nil {
-		srvr.logger.Fatal().Err(err).Msg("unable to convert port to int")
+		srvr.logger.Fatal().Err(err).Msg("unable to create UDPAddress from address and port")
 	}
 
-	udpAddrPort := &net.UDPAddr{
-		IP:   net.ParseIP(*address),
-		Port: iport,
-	}
-
-	lstnr, err := net.ListenUDP("udp", udpAddrPort)
-	if err != nil {
-		srvr.logger.Fatal().Err(err).Msg("unable to create listener")
-	}
-
-	srvr.lstnr = lstnr
+	srvr.udpaddr = udpAddrPort
 
 	srvr.runServer(stop)
+	srvr.logger.Info().Msg("exiting")
 
 }
