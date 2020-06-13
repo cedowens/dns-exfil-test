@@ -1,0 +1,14 @@
+# github.com/paulbellamy/ratecounter v0.2.0
+github.com/paulbellamy/ratecounter
+# github.com/reedobrien/checkers v0.0.0-20171127232805-a2b2374142af
+## explicit
+github.com/reedobrien/checkers
+# github.com/reedobrien/logging v0.0.0-20200118015143-865a4d63b7a6
+## explicit
+github.com/reedobrien/logging
+# github.com/rs/zerolog v1.19.0
+## explicit
+github.com/rs/zerolog
+github.com/rs/zerolog/internal/cbor
+github.com/rs/zerolog/internal/json
+github.com/rs/zerolog/log
