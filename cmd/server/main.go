@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"net"
 	"os"
 	"os/signal"
@@ -35,6 +36,16 @@ func (srvr *dnsServer) requestHandler() {
 
 }
 func (srvr *dnsServer) runServer(stop chan os.Signal) {
+
+	buf := make([]byte, 1024)
+	_, addr, err := srvr.lstnr.ReadFromUDP(buf)
+	if err != nil {
+		srvr.logger.Error().Err(err).Msg("error reading from UDPConff")
+	}
+	fmt.Printf("%+v\t\t%+v", string(buf), addr)
+
+	// block until we receive a stop signal
+	<-stop
 
 }
 
