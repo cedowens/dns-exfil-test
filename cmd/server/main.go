@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"fmt"
+	"net"
+	"os"
+	"os/signal"
+	"strconv"
+	"sync"
+	"syscall"
 
 	"github.com/rs/zerolog"
 
@@ -11,7 +17,7 @@ import (
 
 const (
 	appName           = "dnsTun"
-	defaultListenPort = "5353"
+	defaultListenPort = "53"
 	defaultListenAddr = "0.0.0.0"
 
 	listenAddrEnvVar = "LISTEN_ADDR_ENV_VAR"
@@ -19,7 +25,17 @@ const (
 )
 
 type dnsServer struct {
+	ctx    context.Context
+	wg     *sync.WaitGroup
 	logger zerolog.Logger
+	lstnr  *net.UDPConn
+}
+
+func (srvr *dnsServer) requestHandler() {
+
+}
+func (srvr *dnsServer) runServer(stop chan os.Signal) {
+
 }
 
 func main() {
@@ -37,10 +53,32 @@ func main() {
 
 	flag.Parse()
 
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+
 	srvr := &dnsServer{
+		ctx:    context.Background(),
+		wg:     &sync.WaitGroup{},
 		logger: cmd.SetupLogger(*debug, appName),
 	}
 
-	fmt.Printf("%+v\t%+v\t%+v\n", srvr, address, port)
+	iport, err := strconv.Atoi(*port)
+	if err != nil {
+		srvr.logger.Fatal().Err(err).Msg("unable to convert port to int")
+	}
+
+	udpAddrPort := &net.UDPAddr{
+		IP:   net.ParseIP(*address),
+		Port: iport,
+	}
+
+	lstnr, err := net.ListenUDP("udp", udpAddrPort)
+	if err != nil {
+		srvr.logger.Fatal().Err(err).Msg("unable to create listener")
+	}
+
+	srvr.lstnr = lstnr
+
+	srvr.runServer(stop)
 
 }
