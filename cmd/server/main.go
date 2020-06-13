@@ -41,6 +41,7 @@ func (srvr *dnsServer) msgHandler(udpconnn *net.UDPConn) {
 		// This is most definitely not performant...should create once and rezero.
 		udpbuf := make([]byte, udpDataBufferSize)
 		n, addr, err := udpconnn.ReadFromUDP(udpbuf)
+
 		if err != nil {
 			srvr.logger.Error().Err(err).Msg("error reading the udp connection")
 		}
@@ -54,7 +55,6 @@ func (srvr *dnsServer) msgHandler(udpconnn *net.UDPConn) {
 	}
 }
 func (srvr *dnsServer) runServer(stop chan os.Signal) {
-
 	udpconn, err := net.ListenUDP("udp", srvr.udpaddr)
 	if err != nil {
 		srvr.logger.Fatal().Err(err).Msg("error when getting udpconn from net.ListenUDP")
@@ -67,7 +67,7 @@ func (srvr *dnsServer) runServer(stop chan os.Signal) {
 	}()
 
 	<-stop
-	udpconn.Close()
+	udpconn.Close() //nolint:errcheck,gosec
 }
 
 func main() {
@@ -103,5 +103,4 @@ func main() {
 
 	srvr.runServer(stop)
 	srvr.logger.Info().Msg("exiting")
-
 }

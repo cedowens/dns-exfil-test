@@ -32,7 +32,7 @@ WORKDIR         :=$(PROJECT_DIR)/_workdir
 default: build
 
 build:
-	CGO_ENABLED=0 go build -o $(WORKDIR)/$(PROJECT)_$(OS)_$(ARCH) $(GO_BUILD_FLAGS)
+	CGO_ENABLED=0 go build -o $(WORKDIR)/$(PROJECT)_$(OS)_$(ARCH) $(GO_BUILD_FLAGS) cmd/server/*
 
 clean:
 	rm -f $(WORKDIR)/*

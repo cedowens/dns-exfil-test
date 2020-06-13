@@ -19,7 +19,6 @@ const (
 
 // TestGetDefaultValue tests we receive the default value when the env var isn't set.
 func TestGetDefaultValue(t *testing.T) {
-
 	table := []struct {
 		name string
 		got  string
@@ -35,17 +34,16 @@ func TestGetDefaultValue(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			checkers.Equals(t, tc.got, tc.want)
 		})
-
 	}
 }
 
 // TestDetEnvVarValue tests that we receive the env var defined value.
 func TestDetEnvVarValue(t *testing.T) {
-	os.Setenv(listenPortEnvVar, "12345")
-	os.Setenv(listenAddrEnvVar, "1.1.1.1")
+	err := os.Setenv(listenPortEnvVar, "12345")
+	checkers.OK(t, err)
+	err = os.Setenv(listenAddrEnvVar, "1.1.1.1")
+	checkers.OK(t, err)
 
-	defer os.Unsetenv(listenPortEnvVar)
-	defer os.Unsetenv(listenAddrEnvVar)
 	table := []struct {
 		name string
 		got  string
@@ -61,4 +59,10 @@ func TestDetEnvVarValue(t *testing.T) {
 			checkers.Equals(t, tc.got, tc.want)
 		})
 	}
+
+	err = os.Unsetenv(listenPortEnvVar)
+	checkers.OK(t, err)
+
+	err = os.Unsetenv(listenAddrEnvVar)
+	checkers.OK(t, err)
 }
