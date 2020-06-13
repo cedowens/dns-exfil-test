@@ -1,13 +1,11 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"net"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 
 	"github.com/rs/zerolog"
@@ -30,8 +28,6 @@ const (
 )
 
 type dnsServer struct {
-	ctx     context.Context
-	wg      *sync.WaitGroup
 	logger  zerolog.Logger
 	udpaddr *net.UDPAddr
 }
@@ -89,8 +85,6 @@ func main() {
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
 	srvr := &dnsServer{
-		ctx:    context.Background(),
-		wg:     &sync.WaitGroup{},
 		logger: cmd.SetupLogger(*debug, appName),
 	}
 
