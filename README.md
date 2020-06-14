@@ -1,4 +1,4 @@
-This is a very basic file exfiltration tool that uses DNS A records to exfiltrate files.
+This is a very basic file exfiltration tool that uses DNS A and AAAA records to exfiltrate files. The client sends the specified file as both A and AAAA requests, and currently the server responds just to A record requests with a bogus IP response.
 
 How it Works:
 1. build the server and start it (sudo ./<binname>)
