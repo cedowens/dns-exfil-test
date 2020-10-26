@@ -18,6 +18,18 @@ To Use: **Client Side**
 [10 hex encoded characters].macconsultants.com
 6. Once done the server will take all of the hex encoded data, combine, and unhexlify it to a file as ASCII in the same directory. The output file is called outfile.
 7. The server will not indicate when done but the client does. Once the client says it is done, you can kill the server and view the contents of outfile.
-8. You will need to rename the outfile if you want to send multiple files, since the server will overwrite it if the same filename is used.
+8. You will need to rename the outfile if you want to send multiple files.
+
+----------------------
+
+Example Execution:
+
+**Client**
+
+![Image](client.png)
+
+**Server**
+
+![Image](server.png)
 
 
