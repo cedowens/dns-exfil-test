@@ -1,5 +1,7 @@
 This is a very basic file exfiltration tool that uses DNS A and AAAA records to exfiltrate files. This is a simple tool to easily test for detections for file exfiltration via DNS. The client sends the specified file as both A and AAAA requests, and currently the server responds just to A record requests with a bogus IP response. If Bro (Zeek) is being used, this tool should flag for anomalous dns traffic.
 
+----------------------
+
 To Use: **Server Side**
 1. On your intended server, copy the go-dnsserver.go file and build on the server (**go build**)
 2. Start it: **sudo ./server**
@@ -22,7 +24,7 @@ To Use: **Client Side**
 
 ----------------------
 
-Example Execution:
+***Example Execution:***
 
 **Client**
 
