@@ -2,7 +2,7 @@ This is a very basic file exfiltration tool that uses DNS A and AAAA records to 
 
 To Use: **Server Side**
 1. On your intended server, copy the go-dnsserver.go file and build on the server (**go build**)
-2. Start it: **sudo ./go-dnsserver**
+2. Start it: **sudo ./server**
 3. The server will then listen for incoming DNS connections
 4. The server will resolve any request it receives to 10.10.10.10
 
