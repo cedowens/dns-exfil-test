@@ -21,7 +21,7 @@ func (this *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
 		domain := msg.Question[0].Name
 
 			var domainsToAddresses map[string]string = map[string]string{
-				domain: "10.10.10.10",
+				domain: "0.0.0.0",
 			}
 
 		address, ok := domainsToAddresses[domain]
