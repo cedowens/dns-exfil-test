@@ -6,11 +6,10 @@ This is a very basic file exfiltration tool that uses DNS A and AAAA records to 
 
 To Use: **Server Side**
 1. > cd dns-exfil-test/server 
-2. > sed -i -e 's|10.10.10.10|[YOUR_IP]|g' go-dnsserver.go
-3. > go mod init dns-exfil-text/server
-4. > go get github.com/miekg/dns
-5. > go build
-6. > ./server
+2. > go mod init server/v2
+3. > go get github.com/miekg/dns
+4. > go build
+5. > ./dns-exfil-test
 
 To Use: **Client Side**
 1. > cd dns-exfil-test/client 
