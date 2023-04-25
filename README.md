@@ -9,7 +9,7 @@ To Use: **Server Side**
 2. > go mod init server/v2
 3. > go get github.com/miekg/dns
 4. > go build
-5. > ./dns-exfil-test
+5. > ./server
 
 To Use: **Client Side**
 1. > cd dns-exfil-test/client 
